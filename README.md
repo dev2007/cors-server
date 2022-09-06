@@ -1,17 +1,27 @@
 # cors-server
 
-这个项目主要解决国内的 `https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token` 接口被墙导致 `gitalk` 无法获取 `token` 问题
+## 用途
+解决 `gitalk` 报错 `Error:Network Error`
 
-借助 `vercel` 部署服务来进行接口转发
+API 层面原因为：国内的 `https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token` 接口被墙，导致 `gitalk` 无法获取 `token` 问题
 
-我个人部署了服务，地址为：`cors-server-ecru.vercel.app`
+## 原理
+借助 `vercel` 部署该服务，搭建一个跨域服务替换 `gitalk` 被墙的服务
 
-如果不想折腾，只需把配置下的 `proxy` 改为 `https://cors-server-ecru.vercel.app/github_access_token` 即可，如下
+## 部署方法
 
-![](https://fastly.jsdelivr.net/gh/Dedicatus546/image@main/202207261450438.avif)
+1. vercel 使用 github 登录后，授权访问该项目
+2. 在 vercel 新建项目，选择 github 项目为该项目
+3. 部署成功后获得一个 vercel 分配的域名，如 `cors-server-inky.vercel.app`
+4. 也可以向 vercel 添加自定义域名
 
-如果不放心，可以 `fork` 该项目然后自己注册 `vercel` 进行部署
+## gitalk 配置
 
-相关帖子：[解决 Gitalk 无法获取 Github Token 问题](https://prohibitorum.top/2022/07/26/%E8%A7%A3%E5%86%B3-Gitalk-%E6%97%A0%E6%B3%95%E8%8E%B7%E5%8F%96-Github-Token-%E9%97%AE%E9%A2%98/)
+将 gitalk 中的 `proxy` 配置指定为：`https://{domain}/github_access_token` 即可,
 
-使用技术 `koa + koa router + koa cors + koa bodyparser + axios`
+示例： proxy: 'https://cors-server-inky.vercel.app/github_access_token'
+
+也可以使用我配置的服务域名：`https://cors-server.bookhub.tech/github_access_token`
+
+如果不放心，可以 `fork` 该项目然后自己注册 `vercel` 进行部署配置
+
